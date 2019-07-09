@@ -21,14 +21,14 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework.authtoken import views
 
-from apps.task.views import UserViewSet, CinemaListViewSet, SeansViewSet, FilmViewSet, BookingViewSet
+from apps.task.views import UserViewSet, SeansViewSet, FilmViewSet, BookingViewSet, ReserveViewSet
 
 router = routers.DefaultRouter()
 router.register(r'register', UserViewSet)
-router.register(r'cinema', CinemaListViewSet, basename='cinema')
 router.register(r'seans', SeansViewSet, basename='seans')
 router.register(r'film', FilmViewSet, basename='film')
 router.register(r'booking', BookingViewSet, basename='booking')
+router.register(r'reserve', ReserveViewSet, basename='reserve')
 
 schema_view = get_schema_view(
    openapi.Info(

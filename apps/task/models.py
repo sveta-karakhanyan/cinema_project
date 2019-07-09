@@ -1,25 +1,16 @@
-# from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.db import models
 
 User = get_user_model()
 
 
-class Cinema(models.Model):
-    name = models.CharField(max_length=50, null=False, blank=False)
-
-    def __str__(self):
-        return self.name
-
-
 class Room(models.Model):
     room_name = models.CharField(max_length=50, null=False, blank=False)
-    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE)
     row_count = models.IntegerField()
     column_count = models.IntegerField()
 
     def __str__(self):
-        return self.cinema.name + ' - ' + self.room_name
+        return self.room_name
 
 
 class Film(models.Model):
@@ -39,10 +30,14 @@ class Seans(models.Model):
 
 
 class Booking(models.Model):
-    seans = models.ForeignKey(Seans, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     row = models.IntegerField()
     column = models.IntegerField()
-    reserve = models.BooleanField(null=True, blank=False)
-    active = models.BooleanField(null=True, blank=False)
-    send_mail = models.BooleanField(null=True, blank=False, default=0)
+    seans = models.ForeignKey(Seans, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+class Reserve(models.Model):
+    row = models.IntegerField()
+    column = models.IntegerField()
+    seans = models.ForeignKey(Seans, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
