@@ -45,4 +45,4 @@ class Booking(models.Model):
     column = models.IntegerField()
     reserve = models.BooleanField(null=True, blank=False)
     active = models.BooleanField(null=True, blank=False)
-
+    send_mail = models.BooleanField(null=True, blank=False, default=0)
