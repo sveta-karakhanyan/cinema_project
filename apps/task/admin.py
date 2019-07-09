@@ -1,8 +1,8 @@
 import datetime
-import time
 
 from django.contrib import admin
 
+from apps.task.forms import SeansForm
 from apps.task.models import Film, Seans, Room
 
 
@@ -22,6 +22,7 @@ class FilmAdmin(admin.ModelAdmin):
 
 
 class SeansAdmin(admin.ModelAdmin):
+    form = SeansForm
     list_display = ('film', 'room', 'date', 'start_time', 'end_time')
     readonly_fields = ('end_time', )
 
@@ -34,10 +35,6 @@ class SeansAdmin(admin.ModelAdmin):
         end_time = start + duration
 
         obj.end_time = datetime.datetime.strptime(end_time.__str__(), '%H:%M:%S').time()
-
-
-
-
         super().save_model(request, obj, form, change)
 
 
