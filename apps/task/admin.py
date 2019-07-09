@@ -9,7 +9,7 @@ class CinemaAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
         if not change:
             for i in range(1, 4):
-               Room.objects.create(room_name='Room ' + i, row_count=10, column_count=8, cinema_id=obj.id)
+                Room.objects.create(room_name='Room ' + str(i), row_count=10, column_count=8, cinema_id=obj.id)
 
 
 class FilmAdmin(admin.ModelAdmin):
