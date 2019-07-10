@@ -1,0 +1,29 @@
+[
+  {
+    "model": "task.room",
+    "pk": 1,
+    "fields": {
+      "room_name": "Room 1",
+      "row_count": 8,
+      "column_count": 6
+    }
+  },
+  {
+    "model": "task.room",
+    "pk": 2,
+    "fields": {
+      "room_name": "Room 2",
+      "row_count": 8,
+      "column_count": 6
+    }
+  },
+  {
+    "model": "task.room",
+    "pk": 3,
+    "fields": {
+      "room_name": "Room 3",
+      "row_count": 10,
+      "column_count": 8
+    }
+  }
+]

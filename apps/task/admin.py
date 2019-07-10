@@ -8,13 +8,13 @@ from apps.task.models import Film, Seans, Room
 
 class RoomAdmin(admin.ModelAdmin):
     list_display = ('room_name', 'row_count', 'column_count')
-    # readonly_fields = ('row_count', 'column_count')
+    readonly_fields = ('row_count', 'column_count')
 
     def has_add_permission(self, request):
-        return True
+        return False
 
     def has_delete_permission(self, request, obj=None):
-        return True
+        return False
 
 
 class FilmAdmin(admin.ModelAdmin):
