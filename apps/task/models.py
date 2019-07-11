@@ -21,23 +21,22 @@ class Film(models.Model):
         return self.name
 
 
-class Seans(models.Model):
+class Seance(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     film = models.ForeignKey(Film, on_delete=models.CASCADE)
     date = models.DateField(null=False, auto_now=False, auto_now_add=False)
     start_time = models.TimeField(null=False, auto_now=False, auto_now_add=False)
-    end_time = models.TimeField(null=False, auto_now=False, auto_now_add=False)
 
 
 class Booking(models.Model):
     row = models.IntegerField()
     column = models.IntegerField()
-    seans = models.ForeignKey(Seans, on_delete=models.CASCADE)
+    seance = models.ForeignKey(Seance, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Reserve(models.Model):
     row = models.IntegerField()
     column = models.IntegerField()
-    seans = models.ForeignKey(Seans, on_delete=models.CASCADE)
+    seance = models.ForeignKey(Seance, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

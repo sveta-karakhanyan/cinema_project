@@ -1,11 +1,12 @@
+from collections import OrderedDict
+
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.validators import UniqueValidator
-from django.core.mail import send_mail as django_send_email
 
-from apps.task.models import Room, Film, Seans, Booking, Reserve
+from apps.task.models import Room, Film, Seance, Booking, Reserve
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -25,9 +26,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class RoomSerializer(serializers.ModelSerializer):
-    def to_representation(self, instance):
-        response = super().to_representation(instance)
-        return response
+    room_name = serializers.CharField(required=True, allow_blank=False, allow_null=False, max_length=30, min_length=2)
+    row_count = serializers.IntegerField(required=True, allow_null=False)
+    column_count = serializers.IntegerField(required=True, allow_null=False)
 
     class Meta:
         model = Room
@@ -35,30 +36,47 @@ class RoomSerializer(serializers.ModelSerializer):
 
 
 class FilmSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=True, allow_blank=False, allow_null=False, max_length=30, min_length=2)
+    duration = serializers.TimeField(required=True, allow_null=False)
+
     class Meta:
         model = Film
         fields = ('id', 'name', 'duration')
 
 
-class SeansSerializer(serializers.ModelSerializer):
+class SeanceSerializer(serializers.ModelSerializer):
+    date = serializers.DateField(required=True)
+    start_time = serializers.TimeField(required=True, allow_null=False)
+    room = RoomSerializer(many=False)
+    film = FilmSerializer(many=False)
+
+    # TODO: In the body of the response of each seance, add the list of all chairs with boolean value telling whether it is already booked or not. {(row, column): true,}
     def to_representation(self, instance):
         response = super().to_representation(instance)
-        response['room'] = RoomSerializer(instance.room).data
-        response['film'] = FilmSerializer(instance.film).data
+
+        chairs = OrderedDict()
+        for row in range(1, instance.room.row_count + 1):
+            for column in range(1, instance.room.column_count + 1):
+                booking = Booking.objects.filter(row=row, column=column).first()
+                key = (row, column)
+                chairs[', '.join(map(str, key))] = True if booking else False
+
+        response['chairs'] = chairs
         return response
 
     class Meta:
-        model = Seans
-        fields = ('id', 'date', 'start_time', 'end_time', 'room', 'film', )
+        model = Seance
+        fields = ('id', 'date', 'start_time', 'room', 'film', )
 
 
 class BookingSerializer(serializers.ModelSerializer):
     row = serializers.IntegerField(required=True)
     column = serializers.IntegerField(required=True)
+    seance = SeanceSerializer(many=False)
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
-        response['seans'] = SeansSerializer(instance.seans).data
+        response['seance'] = SeanceSerializer(instance.seance).data
         return response
 
     def validate(self, attrs):
@@ -67,9 +85,9 @@ class BookingSerializer(serializers.ModelSerializer):
             if exists_booking:
                 raise ValidationError({'error_message': 'Have already booked that seat'})
 
-            seans = Seans.objects.filter(pk=attrs['seans'].id).first()
-            if attrs['row'] not in range(1, seans.room.row_count + 1) or \
-                    attrs['column'] not in range(1, seans.room.column_count + 1):
+            seance = Seance.objects.filter(pk=attrs['seance'].id).first()
+            if attrs['row'] not in range(1, seance.room.row_count + 1) or \
+                    attrs['column'] not in range(1, seance.room.column_count + 1):
                 raise ValidationError({'error_message': 'Invalid seat'})
 
         attrs['user'] = self.context['request'].user
@@ -79,41 +97,16 @@ class BookingSerializer(serializers.ModelSerializer):
         instance, _ = Booking.objects.get_or_create(**validated_data)
         return instance
 
-    def update(self, instance, validated_data):
-        booking, deleted = Booking.objects.get(pk=instance.id).delete()
-
-        if deleted:
-            reserved_users = Reserve.objects.filter(
-                row=instance.row, column=instance.column, seans=instance.seans
-            ).values_list('id', 'user__username')
-
-            for key, value in reserved_users:
-                send_mail = django_send_email(
-                    'Cinema Booking',
-                    'You can booking your reserve seat',
-                    'from@example.com',
-                    [value],
-                    fail_silently=False,
-                )
-
-                if send_mail:
-                    Reserve.objects.get(pk=key).delete()
-
-        return []
-
     class Meta:
         model = Booking
-        fields = ('id', 'row', 'column', 'seans', )
+        fields = ('id', 'row', 'column', 'seance', )
 
 
 class ReserveSerializer(serializers.ModelSerializer):
-    row = serializers.IntegerField(required=True)
-    column = serializers.IntegerField(required=True)
-
-    def to_representation(self, instance):
-        response = super().to_representation(instance)
-        response['seans'] = SeansSerializer(instance.seans).data
-        return response
+    row = serializers.IntegerField(required=True, allow_null=False)
+    column = serializers.IntegerField(required=True, allow_null=False)
+    seance = SeanceSerializer(many=False)
+    # TODO: Add seance here, also validate etc...
 
     def validate(self, attrs):
         attrs['user'] = self.context['request'].user
@@ -125,13 +118,13 @@ class ReserveSerializer(serializers.ModelSerializer):
         if exists_booking:
             raise ValidationError({'error_message': 'Have already booked that seat, not necessary to reserve it'})
 
-        seans = Seans.objects.filter(pk=attrs['seans'].id).first()
-        if attrs['row'] not in range(1, seans.room.row_count + 1) or \
-                attrs['column'] not in range(1, seans.room.column_count + 1):
+        seance = Seance.objects.filter(pk=attrs['seance'].id).first()
+        if attrs['row'] not in range(1, seance.room.row_count + 1) or \
+                attrs['column'] not in range(1, seance.room.column_count + 1):
             raise ValidationError({'error_message': 'Invalid seat'})
 
         return attrs
 
     class Meta:
         model = Reserve
-        fields = ('row', 'column', 'seans', )
+        fields = ('row', 'column', 'seance', )

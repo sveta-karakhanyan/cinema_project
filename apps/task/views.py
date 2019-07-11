@@ -1,10 +1,12 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
 from django.contrib.auth import get_user_model
 
-from apps.task.models import Seans, Film, Booking, Reserve
-from apps.task.serializers import UserSerializer, SeansSerializer, FilmSerializer, BookingSerializer, ReserveSerializer
+from apps.task.mixins import CustomDestroyModelMixin
+from apps.task.models import Seance, Film, Booking, Reserve
+from apps.task.serializers import UserSerializer, SeanceSerializer, FilmSerializer, BookingSerializer, ReserveSerializer
 
 User = get_user_model()
 
@@ -22,24 +24,21 @@ class FilmViewSet(ListModelMixin, GenericViewSet):
     http_method_names = ['get', ]
 
 
-class SeansViewSet(ListModelMixin, RetrieveModelMixin,  GenericViewSet):
-    queryset = Seans.objects.all()
-    serializer_class = SeansSerializer
+class SeanceViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+    queryset = Seance.objects.all()
+    serializer_class = SeanceSerializer
     http_method_names = ['get', ]
     permission_classes = [AllowAny, ]
-
-    def get_queryset(self):
-        if self.request.method in ['GET', ]:
-            film = self.request.query_params.get('film_id', None)
-            if film is not None:
-                return self.queryset.filter(film=film)
-        return self.queryset
+    filter_backends = (DjangoFilterBackend, )
+    filterset_fields = ('film_id', )
 
 
-class BookingViewSet(ListModelMixin, CreateModelMixin, UpdateModelMixin, GenericViewSet):
+class BookingViewSet(ListModelMixin, CreateModelMixin, UpdateModelMixin, CustomDestroyModelMixin, GenericViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
-    http_method_names = ['get', 'post', 'patch', ]
+    http_method_names = ['get', 'post', 'patch', 'delete', ]
+    filter_backends = (DjangoFilterBackend, )
+    filterset_fields = ('seance_id', )
 
     def get_serializer(self, *args, **kwargs):
         serializer_class = self.get_serializer_class()
@@ -50,12 +49,9 @@ class BookingViewSet(ListModelMixin, CreateModelMixin, UpdateModelMixin, Generic
         return serializer_class(*args, **kwargs)
 
     def get_queryset(self):
-        if self.request.method in ['GET', ]:
-            seans = self.request.query_params.get('seans_id', None)
-            if seans is not None:
-                return self.queryset.filter(seans=seans)
-        elif self.request.method in ['PATCH', 'DELETE', ]:
+        if self.request.method in ['PATCH', 'DELETE', ]:
             return self.queryset.filter(user=self.request.user)
+        return self.queryset
 
     def get_permissions(self):
         permission_classes = [IsAuthenticated]
