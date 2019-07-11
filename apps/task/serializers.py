@@ -67,6 +67,11 @@ class BookingSerializer(serializers.ModelSerializer):
             if exists_booking:
                 raise ValidationError({'error_message': 'Have already booked that seat'})
 
+            seans = Seans.objects.filter(pk=attrs['seans'].id).first()
+            if attrs['row'] not in range(1, seans.room.row_count + 1) or \
+                    attrs['column'] not in range(1, seans.room.column_count + 1):
+                raise ValidationError({'error_message': 'Invalid seat'})
+
         attrs['user'] = self.context['request'].user
         return attrs
 
@@ -98,7 +103,7 @@ class BookingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Booking
-        fields = ('row', 'column', 'seans', )
+        fields = ('id', 'row', 'column', 'seans', )
 
 
 class ReserveSerializer(serializers.ModelSerializer):
@@ -119,6 +124,11 @@ class ReserveSerializer(serializers.ModelSerializer):
         exists_booking = Booking.objects.filter(**attrs).first()
         if exists_booking:
             raise ValidationError({'error_message': 'Have already booked that seat, not necessary to reserve it'})
+
+        seans = Seans.objects.filter(pk=attrs['seans'].id).first()
+        if attrs['row'] not in range(1, seans.room.row_count + 1) or \
+                attrs['column'] not in range(1, seans.room.column_count + 1):
+            raise ValidationError({'error_message': 'Invalid seat'})
 
         return attrs
 
