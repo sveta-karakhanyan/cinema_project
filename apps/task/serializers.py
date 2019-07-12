@@ -51,29 +51,6 @@ class FilmSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'duration')
 
 
-class SeanceSerializer(serializers.ModelSerializer):
-    date = serializers.DateField(required=True)
-    start_time = serializers.TimeField(required=True, allow_null=False)
-
-    # TODO: In the body of the response of each seance, add the list of all chairs with boolean value telling whether it is already booked or not. {(row, column): true,}
-    def to_representation(self, instance):
-        response = super().to_representation(instance)
-
-        chairs = OrderedDict()
-        seats = Seat.objects.filter(room=instance.room.id)
-        if seats.exists:
-            for seat_instance in seats:
-                booking = Booking.objects.filter(seat=seat_instance.id, seance=instance.id).first()
-                chairs[seat_instance.id] = True if booking else False
-
-        response['chairs'] = chairs
-        return response
-
-    class Meta:
-        model = Seance
-        fields = ('id', 'date', 'start_time', 'room', 'film', )
-
-
 class BookingSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
@@ -97,6 +74,28 @@ class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = ('id', 'seat', 'seance', )
+
+
+class SeanceSerializer(serializers.ModelSerializer):
+    date = serializers.DateField(required=True)
+    start_time = serializers.TimeField(required=True, allow_null=False)
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+
+        chairs = OrderedDict()
+        seats = Seat.objects.filter(room=instance.room.id).prefetch_related('booking_set')
+        if seats.exists:
+            for seat_instance in seats:
+                booking = seat_instance.booking_set.first()
+                chairs[seat_instance.id] = True if booking else False
+
+        response['chairs'] = chairs
+        return response
+
+    class Meta:
+        model = Seance
+        fields = ('id', 'date', 'start_time', 'room', 'film', )
 
 
 class ReserveSerializer(serializers.ModelSerializer):

@@ -5,7 +5,7 @@ from django.core.mail import send_mail as django_send_email
 from apps.task.models import Reserve
 
 
-class CustomDestroyModelMixin(DestroyModelMixin):
+class UnbookedDestroyModelMixin(DestroyModelMixin):
     def perform_destroy(self, instance):
         booking, deleted = instance.delete()
 
