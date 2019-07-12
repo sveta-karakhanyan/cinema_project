@@ -3,27 +3,84 @@
     "model": "task.room",
     "pk": 1,
     "fields": {
-      "room_name": "Room 1",
-      "row_count": 8,
-      "column_count": 6
+      "room_name": "Room 1"
     }
   },
   {
     "model": "task.room",
     "pk": 2,
     "fields": {
-      "room_name": "Room 2",
-      "row_count": 8,
-      "column_count": 6
+      "room_name": "Room 2"
     }
   },
   {
     "model": "task.room",
     "pk": 3,
     "fields": {
-      "room_name": "Room 3",
-      "row_count": 10,
-      "column_count": 8
+      "room_name": "Room 3"
+    }
+  },
+  {
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room": 1
+    }
+  },
+  {
+    "model": "task.seat",
+    "pk": 2,
+    "fields": {
+      "row": 1,
+      "column": 2,
+      "room": 1
+    }
+  },
+  {
+    "model": "task.seat",
+    "pk": 3,
+    "fields": {
+      "row": 1,
+      "column": 3,
+      "room": 1
+    }
+  },
+  {
+    "model": "task.seat",
+    "pk": 4,
+    "fields": {
+      "row": 1,
+      "column": 4,
+      "room": 1
+    }
+  },
+  {
+    "model": "task.seat",
+    "pk": 5,
+    "fields": {
+      "row": 1,
+      "column": 5,
+      "room": 1
+    }
+  },
+  {
+    "model": "task.seat",
+    "pk": 6,
+    "fields": {
+      "row": 1,
+      "column": 6,
+      "room": 1
+    }
+  },
+  {
+    "model": "task.seat",
+    "pk": 7,
+    "fields": {
+      "row": 2,
+      "column": 1,
+      "room": 1
     }
   }
 ]

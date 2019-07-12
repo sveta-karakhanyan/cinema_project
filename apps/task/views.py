@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
 from django.contrib.auth import get_user_model
 
-from apps.task.mixins import CustomDestroyModelMixin
+from apps.task.mixins import UnbookedDestroyModelMixin
 from apps.task.models import Seance, Film, Booking, Reserve
 from apps.task.serializers import UserSerializer, SeanceSerializer, FilmSerializer, BookingSerializer, ReserveSerializer
 
@@ -33,7 +33,7 @@ class SeanceViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     filterset_fields = ('film_id', )
 
 
-class BookingViewSet(ListModelMixin, CreateModelMixin, UpdateModelMixin, CustomDestroyModelMixin, GenericViewSet):
+class BookingViewSet(ListModelMixin, CreateModelMixin, UpdateModelMixin, UnbookedDestroyModelMixin, GenericViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
     http_method_names = ['get', 'post', 'patch', 'delete', ]
