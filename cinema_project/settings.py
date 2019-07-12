@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'cinema_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cinema',
+        'NAME': 'cinema_1',
         'USER': 'root',
         'PASSWORD': 'root',
     }
