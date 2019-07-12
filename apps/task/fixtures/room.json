@@ -25,5 +25,364 @@
       "row_count": 10,
       "column_count": 8
     }
+  },
+  {
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },
+  {
+    "model": "task.seat",
+    "pk": 2,
+    "fields": {
+      "row": 1,
+      "column": 2,
+      "room_id": 1
+    }
+  },
+  {
+    "model": "task.seat",
+    "pk": 3,
+    "fields": {
+      "row": 1,
+      "column": 3,
+      "room_id": 1
+    }
+  },
+  {
+    "model": "task.seat",
+    "pk": 4,
+    "fields": {
+      "row": 1,
+      "column": 4,
+      "room_id": 1
+    }
+  },
+  {
+    "model": "task.seat",
+    "pk": 5,
+    "fields": {
+      "row": 1,
+      "column": 5,
+      "room_id": 1
+    }
+  },
+  {
+    "model": "task.seat",
+    "pk": 6,
+    "fields": {
+      "row": 1,
+      "column": 6,
+      "room_id": 1
+    }
+  },
+  {
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
+  },{
+    "model": "task.seat",
+    "pk": 1,
+    "fields": {
+      "row": 1,
+      "column": 1,
+      "room_id": 1
+    }
   }
 ]
