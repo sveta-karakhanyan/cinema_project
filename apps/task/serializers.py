@@ -57,7 +57,7 @@ class SeanceSerializer(serializers.ModelSerializer):
         chairs = OrderedDict()
         for row in range(1, instance.room.row_count + 1):
             for column in range(1, instance.room.column_count + 1):
-                booking = Booking.objects.filter(row=row, column=column).first()
+                booking = Booking.objects.filter(row=row, column=column, seance=instance.id).first()
                 key = (row, column)
                 chairs[', '.join(map(str, key))] = True if booking else False
 
