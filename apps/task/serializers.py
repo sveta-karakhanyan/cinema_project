@@ -63,11 +63,11 @@ class SeanceSerializer(serializers.ModelSerializer):
         response = super().to_representation(instance)
 
         chairs = OrderedDict()
-        # for row in range(1, instance.room.row_count + 1):
-        #     for column in range(1, instance.room.column_count + 1):
-        #         booking = Booking.objects.filter(row=row, column=column, seance=instance.id).first()
-        #         key = (row, column)
-        #         chairs[', '.join(map(str, key))] = True if booking else False
+        seats = Seat.objects.filter(room=instance.room.id)
+        if seats.exists:
+            for seat_instance in seats:
+                booking = Booking.objects.filter(seat=seat_instance.id, seance=instance.id).first()
+                chairs[seat_instance.id] = True if booking else False
 
         response['chairs'] = chairs
         return response
