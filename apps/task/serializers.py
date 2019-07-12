@@ -30,7 +30,7 @@ class RoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Room
-        fields = ('room_name', 'row_count', 'column_count', )
+        fields = ('room_name', )
 
 
 class SeatSerializer(serializers.ModelSerializer):

@@ -33,14 +33,12 @@ class Seance(models.Model):
 
 
 class Booking(models.Model):
-    row = models.IntegerField()
-    column = models.IntegerField()
+    seat = models.ForeignKey(Seat, on_delete=models.CASCADE)
     seance = models.ForeignKey(Seance, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Reserve(models.Model):
-    row = models.IntegerField()
-    column = models.IntegerField()
+    seat = models.ForeignKey(Seat, on_delete=models.CASCADE)
     seance = models.ForeignKey(Seance, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
