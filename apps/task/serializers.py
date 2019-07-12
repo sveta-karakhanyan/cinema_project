@@ -36,7 +36,6 @@ class RoomSerializer(serializers.ModelSerializer):
 class SeatSerializer(serializers.ModelSerializer):
     row = serializers.IntegerField(required=True, allow_null=False)
     column = serializers.IntegerField(required=True, allow_null=False)
-    room = RoomSerializer(many=False)
 
     class Meta:
         model = Seat
@@ -55,8 +54,6 @@ class FilmSerializer(serializers.ModelSerializer):
 class SeanceSerializer(serializers.ModelSerializer):
     date = serializers.DateField(required=True)
     start_time = serializers.TimeField(required=True, allow_null=False)
-    room = RoomSerializer(many=False)
-    film = FilmSerializer(many=False)
 
     # TODO: In the body of the response of each seance, add the list of all chairs with boolean value telling whether it is already booked or not. {(row, column): true,}
     def to_representation(self, instance):
@@ -78,8 +75,6 @@ class SeanceSerializer(serializers.ModelSerializer):
 
 
 class BookingSerializer(serializers.ModelSerializer):
-    seat = SeatSerializer(many=False)
-    seance = SeanceSerializer(many=False)
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
@@ -105,9 +100,6 @@ class BookingSerializer(serializers.ModelSerializer):
 
 
 class ReserveSerializer(serializers.ModelSerializer):
-    seat = SeatSerializer(many=False)
-    seance = SeanceSerializer(many=False)
-    # TODO: Add seance here, also validate etc...
 
     def validate(self, attrs):
         attrs['user'] = self.context['request'].user
