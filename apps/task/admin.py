@@ -1,12 +1,22 @@
 from django.contrib import admin
 
 from apps.task.forms import SeanceForm
-from apps.task.models import Film, Seance, Room
+from apps.task.models import Film, Seance, Room, Seat
 
 
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ('room_name', 'row_count', 'column_count')
-    readonly_fields = ('row_count', 'column_count')
+    list_display = ('room_name', )
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+class SeatAdmin(admin.ModelAdmin):
+    list_display = ('row', 'column', 'room')
+    readonly_fields = ('row', 'column', 'room')
 
     def has_add_permission(self, request):
         return False
@@ -25,5 +35,6 @@ class SeanceAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Room, RoomAdmin)
+admin.site.register(Seat, SeatAdmin)
 admin.site.register(Film, FilmAdmin)
 admin.site.register(Seance, SeanceAdmin)
