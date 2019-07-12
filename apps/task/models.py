@@ -6,11 +6,15 @@ User = get_user_model()
 
 class Room(models.Model):
     room_name = models.CharField(max_length=50, null=False, blank=False)
-    row_count = models.IntegerField()
-    column_count = models.IntegerField()
 
     def __str__(self):
         return self.room_name
+
+
+class Seat(models.Model):
+    row = models.IntegerField(null=False, blank=False)
+    column = models.IntegerField(null=False, blank=False)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
 
 class Film(models.Model):

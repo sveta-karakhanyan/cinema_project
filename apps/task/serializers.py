@@ -6,7 +6,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.validators import UniqueValidator
 
-from apps.task.models import Room, Film, Seance, Booking, Reserve
+from apps.task.models import Room, Film, Seance, Booking, Reserve, Seat
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -27,12 +27,20 @@ class UserSerializer(serializers.ModelSerializer):
 
 class RoomSerializer(serializers.ModelSerializer):
     room_name = serializers.CharField(required=True, allow_blank=False, allow_null=False, max_length=30, min_length=2)
-    row_count = serializers.IntegerField(required=True, allow_null=False)
-    column_count = serializers.IntegerField(required=True, allow_null=False)
 
     class Meta:
         model = Room
         fields = ('room_name', 'row_count', 'column_count', )
+
+
+class SeatSerializer(serializers.ModelSerializer):
+    row = serializers.IntegerField(required=True, allow_null=False)
+    column = serializers.IntegerField(required=True, allow_null=False)
+    room = RoomSerializer(many=False)
+
+    class Meta:
+        model = Seat
+        fields = ('row', 'column', 'room', )
 
 
 class FilmSerializer(serializers.ModelSerializer):
@@ -55,11 +63,11 @@ class SeanceSerializer(serializers.ModelSerializer):
         response = super().to_representation(instance)
 
         chairs = OrderedDict()
-        for row in range(1, instance.room.row_count + 1):
-            for column in range(1, instance.room.column_count + 1):
-                booking = Booking.objects.filter(row=row, column=column, seance=instance.id).first()
-                key = (row, column)
-                chairs[', '.join(map(str, key))] = True if booking else False
+        # for row in range(1, instance.room.row_count + 1):
+        #     for column in range(1, instance.room.column_count + 1):
+        #         booking = Booking.objects.filter(row=row, column=column, seance=instance.id).first()
+        #         key = (row, column)
+        #         chairs[', '.join(map(str, key))] = True if booking else False
 
         response['chairs'] = chairs
         return response
@@ -70,8 +78,7 @@ class SeanceSerializer(serializers.ModelSerializer):
 
 
 class BookingSerializer(serializers.ModelSerializer):
-    row = serializers.IntegerField(required=True)
-    column = serializers.IntegerField(required=True)
+    seat = SeatSerializer(many=False)
     seance = SeanceSerializer(many=False)
 
     def to_representation(self, instance):
@@ -85,11 +92,6 @@ class BookingSerializer(serializers.ModelSerializer):
             if exists_booking:
                 raise ValidationError({'error_message': 'Have already booked that seat'})
 
-            seance = Seance.objects.filter(pk=attrs['seance'].id).first()
-            if attrs['row'] not in range(1, seance.room.row_count + 1) or \
-                    attrs['column'] not in range(1, seance.room.column_count + 1):
-                raise ValidationError({'error_message': 'Invalid seat'})
-
         attrs['user'] = self.context['request'].user
         return attrs
 
@@ -99,12 +101,11 @@ class BookingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Booking
-        fields = ('id', 'row', 'column', 'seance', )
+        fields = ('id', 'seat', 'seance', )
 
 
 class ReserveSerializer(serializers.ModelSerializer):
-    row = serializers.IntegerField(required=True, allow_null=False)
-    column = serializers.IntegerField(required=True, allow_null=False)
+    seat = SeatSerializer(many=False)
     seance = SeanceSerializer(many=False)
     # TODO: Add seance here, also validate etc...
 
@@ -118,13 +119,8 @@ class ReserveSerializer(serializers.ModelSerializer):
         if exists_booking:
             raise ValidationError({'error_message': 'Have already booked that seat, not necessary to reserve it'})
 
-        seance = Seance.objects.filter(pk=attrs['seance'].id).first()
-        if attrs['row'] not in range(1, seance.room.row_count + 1) or \
-                attrs['column'] not in range(1, seance.room.column_count + 1):
-            raise ValidationError({'error_message': 'Invalid seat'})
-
         return attrs
 
     class Meta:
         model = Reserve
-        fields = ('row', 'column', 'seance', )
+        fields = ('seat', 'seance', )
